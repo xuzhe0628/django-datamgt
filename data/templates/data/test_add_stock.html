@@ -1,0 +1,17 @@
+{% extends "data/header.html" %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+<h3>Create Stock</h3>
+<form action="" method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <a target="_blank" href="{% url 'data:search' %}"><span class="glyphicon glyphicon glyphicon-zoom-in"></span> Search Property</a>
+    <a target="_blank" href="{% url 'data:add' %}"><span class="glyphicon glyphicon glyphicon-pencil"></span> Create Property</a><br></br>
+    <button type="submit" class="btn btn-info">Submit</button>
+</form>
+{% endblock %}
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+{% endblock %}

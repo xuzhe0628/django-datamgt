@@ -1,0 +1,99 @@
+{% extends "data/header.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="col-sm-6">
+      <div>
+        <h3>{{ property.name }}</h3>
+        {% load staticfiles %}
+        <img src="{% static property.image.image_body.url %}" style="width:128px;height:128px;" alt="Building Image">
+        <table class="table table-hover">
+            <tr>
+                <td><b>Address</b></td>
+                <td>{{ property.address }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Building Grade</b></td>
+                <td>{{ property.building_grade }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Latitude</b></td>
+                <td>{{ property.latitude }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Longitude</b></td>
+                <td>{{ property.longitude }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Country</b></td>
+                <td>{{ property.country }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Description</b></td>
+                <td>{{ property.description }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Creation Time</b></td>
+                <td>{{ property.createdon }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Creation User</b></td>
+                <td>{{ property.createdby }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Modification Time</b></td>
+                <td>{{ property.modifiedon }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><b>Modification User</b></td>
+                <td>{{ property.modifiedby }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="{% url 'data:add_stock' %}"><span class="glyphicon glyphicon glyphicon-pencil"></span> Create Stock</a></b></td>
+                <td><a href="{% url 'data:update' property.id %}"><span class="glyphicon glyphicon glyphicon-pencil"></span> Update</a></b></td>
+                <td><a href="{% url 'data:delete' property.id %}"><span class="glyphicon glyphicon glyphicon-remove"></span> Delete</a></td> 
+            </tr>
+        </table>
+      </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="col-sm-6">
+    <div>
+        <h3>Stocks</h3>
+        <table class="table table-hover">
+{% if stock_list %}
+                <tr>
+                    <td><b>Name</b></td>
+                    <td><b>Floor</b></td>
+                    <td><b>Available Date</b></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% for stock in stock_list %}
+                <tr>
+                    <td><a href="{% url 'data:detail_stock' stock.id %}">{{ stock.name }}</a></td>
+                    <td>{{ stock.floor }}</td>
+                    <td>{{ stock.available }}</td>
+                    <td><a href="{% url 'data:update_stock' stock.id %}"><span class="glyphicon glyphicon glyphicon-pencil"></span> Update</a></td>
+                    <td><a href="{% url 'data:delete_stock' stock.id %}"><span class="glyphicon glyphicon glyphicon-remove"></span> Delete</a></td>
+                </tr>
+            {% endfor %}
+{% else %}
+    <tr><td>No stock is available.</td><td></td><td></td><td></td><td></td></tr>
+{% endif %}
+        </table>
+    </div>
+    </div>
+</div>
+{% endblock %}

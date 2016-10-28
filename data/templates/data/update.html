@@ -1,0 +1,8 @@
+{% extends "data/header.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<form action="" method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-warning">Update</button>
+</form>
+{% endblock %}

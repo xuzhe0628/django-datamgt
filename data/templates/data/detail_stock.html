@@ -1,0 +1,44 @@
+{% extends "data/header.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="col-sm-9">
+      <div>
+        <h3>{{ stock.name }}</h3>
+        <table class="table table-hover">                
+            <tr>
+                <td><b>Property</b></td>
+                <td><a href="{% url 'data:detail' stock.property.id %}">{{ stock.property.name }}</a></td>
+            </tr>
+            <tr>
+                <td><b>Floor</b></td>
+                <td>{{ stock.floor }}</td>
+            </tr>
+            <tr>
+                <td><b>Available Date</b></td>
+                <td>{{ stock.available }}</td>
+            </tr>
+            <tr>
+                <td><b>Creation Time</b></td>
+                <td>{{ stock.createdon }}</td>
+            </tr>
+            <tr>
+                <td><b>Creation User</b></td>
+                <td>{{ stock.createdby }}</td>
+            </tr>
+            <tr>
+                <td><b>Modification Time</b></td>
+                <td>{{ stock.modifiedon }}</td>
+            </tr>
+            <tr>
+                <td><b>Modification User</b></td>
+                <td>{{ stock.modifiedby }}</td>
+            </tr>
+            <tr>
+                <td><a href="{% url 'data:update_stock' stock.id %}"><span class="glyphicon glyphicon glyphicon-pencil"></span> Update</a></td>
+                <td><a href="{% url 'data:delete_stock' stock.id %}"><span class="glyphicon glyphicon glyphicon-remove"></span> Delete</a></td>
+            </tr>
+        </table>
+      </div>
+    </div>
+</div>
+{% endblock %}
