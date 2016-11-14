@@ -1,6 +1,7 @@
 from django.views import generic
 from django.shortcuts import render, redirect, HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+import django.contrib.auth.mixins as mixin
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Count
 from django.contrib.auth.models import User
@@ -98,25 +99,28 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
         return context
     
  
-class AddView(LoginRequiredMixin, generic.edit.CreateView):
+class AddView(PermissionRequiredMixin, LoginRequiredMixin, generic.edit.CreateView):
     form_class = AddForm
     login_url = '/data/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'data/add.html'
+    permission_required = 'data.add_property'
 
-class UpdateView(LoginRequiredMixin, generic.edit.UpdateView):
+class UpdateView(PermissionRequiredMixin, LoginRequiredMixin, generic.edit.UpdateView):
     model = Property
     form_class = UpdateForm
     login_url = '/data/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'data/update.html'
+    permission_required = 'data.change_property'
 
-class DeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+class DeleteView(PermissionRequiredMixin, LoginRequiredMixin, generic.edit.DeleteView):
     model = Property
     login_url = '/data/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'data/delete.html'
     success_url = '/data'
+    permission_required = 'data.delete_property'
 
 #Stock Views
 class SearchViewStock(LoginRequiredMixin, generic.edit.FormView):
@@ -143,25 +147,28 @@ class DetailViewStock(LoginRequiredMixin, generic.DetailView):
     redirect_field_name = 'redirect_to'
     template_name = 'data/detail_stock.html' 
  
-class AddViewStock(LoginRequiredMixin, generic.edit.CreateView):
+class AddViewStock(PermissionRequiredMixin, LoginRequiredMixin, generic.edit.CreateView):
     form_class = AddFormStock
     login_url = '/data/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'data/add_stock.html'
+    permission_required = 'data.add_stock'
 
-class UpdateViewStock(LoginRequiredMixin, generic.edit.UpdateView):
+class UpdateViewStock(PermissionRequiredMixin, LoginRequiredMixin, generic.edit.UpdateView):
     model = Stock
     form_class = UpdateFormStock
     login_url = '/data/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'data/update_stock.html'
+    permission_required = 'data.change_stock'
 
-class DeleteViewStock(LoginRequiredMixin, generic.edit.DeleteView):
+class DeleteViewStock(PermissionRequiredMixin, LoginRequiredMixin, generic.edit.DeleteView):
     model = Stock
     login_url = '/data/login/'
     redirect_field_name = 'redirect_to'
     template_name = 'data/delete_stock.html'
     success_url = '/data'
+    permission_required = 'data.delete_stock'
     
 #View for properrt autocomplete
 class PropertyAutocomplete(autocomplete.Select2QuerySetView):
