@@ -25,7 +25,9 @@ SECRET_KEY = 'mw9a@myzwf4@xz9d7!kig$v(7ntlz!yqm8(^8g40_*hfy6%efb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'data-management-demo-fourtwo.c9users.io',
+]
 
 
 # Application definition
