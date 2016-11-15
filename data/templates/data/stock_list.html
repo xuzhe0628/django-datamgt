@@ -1,0 +1,36 @@
+{% extends "data/header.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="col-sm-9">
+    <div>
+        <h3>Stock Search</h3>
+        <table class="table table-hover">
+            <tr>
+                <td><b>Building Name</b></td>
+                <td><b>Stock Name</b></td>
+                <td><b>Floor</b></td>
+                <td><b>Available Date</b></td>
+            </tr>
+        {% for stock in object_list %}
+            {% if stock.name == 'No result'%}
+                <tr>
+                    <td>No Result</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td><a href="{% url 'data:detail' stock.property.id %}">{{ stock.property.name }}</a></td>
+                    <td><a href="{% url 'data:detail_stock' stock.id %}">{{ stock.name }}</a></td>
+                    <td>{{ stock.floor }}</td>
+                    <td>{{ stock.available }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+        <div><a href="{% url 'data:search_stock'%}"><span class="glyphicon glyphicon glyphicon-zoom-in"></span> Search Again</a></div>
+        <div>{% include 'data/pagination.html' %}</div>
+    </div>
+</div>
+{% endblock %}

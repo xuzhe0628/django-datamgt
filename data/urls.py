@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^update_stock/(?P<pk>[0-9]+)/$', views.UpdateViewStock.as_view(), name='update_stock'),
     url(r'^add_stock/$', views.AddViewStock.as_view(), name='add_stock'),
     url(r'^search_stock/$', views.SearchViewStock.as_view(), name='search_stock'),
-    #test url for autocomplete
+    #test URLConfs
     #url(r'^property_autocomplete/$',views.PropertyAutocomplete.as_view(create_field='name'),name='property_autocomplete',),
+    url(r'^search_stock/stock_list', views.StockListView.as_view(), name='stock_list'),
+    url(r'^search/property_list', views.PropertyListView.as_view(), name='property_list'),
 ]
