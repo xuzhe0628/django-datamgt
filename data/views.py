@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Count
 from django.contrib.auth.models import User
 from dal import autocomplete
+from django.core.paginator import Paginator
+from django.urls import reverse
 
 from .models import Property, Stock
 from .forms import SearchForm, LoginForm, AddForm, UpdateForm, SearchFormStock, AddFormStock, UpdateFormStock
@@ -56,6 +58,29 @@ class LoginView(generic.edit.FormView):
             else:
                 return redirect('data:login')
 
+class StockListView(LoginRequiredMixin, generic.ListView):
+    model = Stock
+    paginate_by = 5
+    login_url = '/data/login/'
+    redirect_field_name = 'redirect_to'
+    template_name = 'data/stock_list.html'
+    
+    def get_queryset(self):
+        old_request = self.request.session['old_post']
+        result = Stock.objects.filter(property__name__contains=old_request['buildingname']).order_by(old_request['orderby'])
+        return result
+
+class PropertyListView(LoginRequiredMixin, generic.ListView):
+    model = Property
+    paginate_by = 5
+    login_url = '/data/login/'
+    redirect_field_name = 'redirect_to'
+    template_name = 'data/property_list.html'
+    
+    def get_queryset(self):
+        old_request = self.request.session['old_post']
+        result = Property.objects.filter(name__contains=old_request['buildingname']).order_by(old_request['orderby'])
+        return result
                 
 '''                
 class LogoutView(LoginRequiredMixin, generic.TemplateView):
@@ -82,11 +107,11 @@ class SearchView(LoginRequiredMixin, generic.edit.FormView):
             order = request.POST['orderby'].strip()
             result = Property.objects.filter(name__contains=pat).order_by(order)
             if result:
-                return render(request, 'data/search.html', {'result_property_list': result})
-            else:
-                result = [{'name':'No result',}]
-                return render(request, 'data/search.html', {'result_property_list': result})
-                
+                request.session['old_post'] = request.POST
+                return HttpResponseRedirect('property_list')
+        else:
+            return render(request, 'data/search.html', { 'form' : form })
+
 class DetailView(LoginRequiredMixin, generic.DetailView):
     model = Property
     login_url = '/data/login/'
@@ -129,6 +154,7 @@ class SearchViewStock(LoginRequiredMixin, generic.edit.FormView):
     redirect_field_name = 'redirect_to'
     template_name = 'data/search_stock.html'
     
+    
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -136,10 +162,12 @@ class SearchViewStock(LoginRequiredMixin, generic.edit.FormView):
             order = request.POST['orderby'].strip()
             result = Stock.objects.filter(property__name__contains=pat).order_by(order)
             if result:
-                return render(request, 'data/search_stock.html', {'result_stock_list': result})
-            else:
-                result = [{'name':'No result',}]
-                return render(request, 'data/search_stock.html', {'result_stock_list': result})
+                request.session['old_post'] = request.POST
+                return HttpResponseRedirect('stock_list')
+        else:
+            return render(request, 'data/search_stock.html', { 'form' : form })
+    
+                
                 
 class DetailViewStock(LoginRequiredMixin, generic.DetailView):
     model = Stock
